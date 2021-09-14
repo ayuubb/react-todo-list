@@ -36,7 +36,7 @@ function App() {
     const addTodos = [
       ...todo,
       {
-        titile: value,
+        title: value,
         count: 1,
       },
     ];
