@@ -1,0 +1,21 @@
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.info__total > p {
+  font-weight: bold;
+}
+
+.delete__button {
+  background-color: unset;
+  border: none;
+  padding: unset;
+  color: red;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}

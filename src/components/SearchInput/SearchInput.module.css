@@ -1,0 +1,27 @@
+.form {
+  display: flex;
+  /* margin-bottom: 1rem; */
+}
+
+.input {
+  flex: 1;
+  margin-right: 0.5rem;
+  box-shadow: var(--main-box-shadow);
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  color: var(--main-font-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.add__button {
+  border: none;
+  border-radius: 6px;
+  color: var(--secondary-font-color);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  width: 88px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--main-box-shadow);
+}

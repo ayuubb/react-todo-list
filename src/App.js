@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import classnames from 'classnames';
-import './App.css';
-import shoppingIcon from './assets/shopping-icon.svg';
-import plusIcon from './assets/plus-icon.svg';
-import minusIcon from './assets/minus-icon.svg';
+import Navbar from './components/Navbar';
+import Container from './components/Container';
+import SearchInput from './components/SearchInput';
+import Info from './components/Info';
+import Todo from './components/Todos';
+import Empty from './components/Empty';
 
 function App() {
   const [value, setvalue] = useState('');
@@ -26,12 +27,33 @@ function App() {
   const countingMin = (index) => {
     const newTodos = [...todo];
 
-    newTodos[index].count = newTodos[index].count - 1;
+    if (newTodos[index].count > 0) {
+      // when value more then 0, it can reduce the value
+      newTodos[index].count = newTodos[index].count - 1;
+    } else {
+      //when  value less then 0, array will be erased according to index
+      newTodos.splice(index, 1);
+    }
+
     setTodo(newTodos);
   };
+  // get total value
+  const getTotalValue = () => {
+    const totalValue = todo.reduce((total, num) => {
+      return total + num.count;
+    }, 0);
 
+    return totalValue;
+  };
+
+  //input value is empty
   const submit = (e) => {
     e.preventDefault();
+
+    if (!value) {
+      alert('kosong');
+      return;
+    }
 
     const addTodos = [
       ...todo,
@@ -41,58 +63,20 @@ function App() {
       },
     ];
     setTodo(addTodos);
+    setvalue('');
   };
 
   return (
     <>
-      <nav className="nav">
-        <img src={shoppingIcon} className="nav__icon" alt="shopping icon" />
-        <h1 className="nav__title">Shopping List</h1>
-      </nav>
+      <Navbar />
 
-      <section className="container">
-        <form action="" className="form" onSubmit={submit}>
-          <input
-            onChange={(e) => {
-              setvalue(e.target.value);
-            }}
-            value={value}
-            type="text"
-            className="input"
-            placeholder="List"
-          />
-          <button className="add__button" type="submit">
-            add
-          </button>
-        </form>
+      <Container>
+        <SearchInput onSubmit={submit} onChange={(e) => setvalue(e.target.value)} value={value} />
 
-        {todo.length > 0 ? (
-          <div className="todos">
-            {todo.map((todo, index, arr) => {
-              return (
-                <div key={index} className={`todo ${!(arr.length === index + 1) && `todo__divider`}`}>
-                  {todo.title}
-                  <div className="todo__icon__wrapper">
-                    <div className="todo__count">{todo.count}</div>
+        <Info todoLength={todo.length} total={getTotalValue()} onDelete={() => setTodo([])} />
 
-                    <button onClick={() => countingMin(index)} className="todo__action__button">
-                      <img src={minusIcon} alt="minus icon" />
-                    </button>
-
-                    <button onClick={() => countingAdd(index)} className="todo__action__button">
-                      <img src={plusIcon} alt="plus icon" />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div>
-            <p>kosong</p>
-          </div>
-        )}
-      </section>
+        {todo.length > 0 ? <Todo todo={todo} countingAdd={(index) => countingAdd(index)} countingMin={(index) => countingMin(index)} /> : <Empty />}
+      </Container>
     </>
   );
 }
